@@ -9,7 +9,7 @@ public class CharacterInteractionController : MonoBehaviour
     {
 
     }
-public GameObject player;
+    public GameObject player;
     public LayerMask collisionMask;
     public Text scoreText;
     public AudioClip popSound;
@@ -26,12 +26,13 @@ public GameObject player;
     // Update is called once per frame
     void Update()
     {
-        if (health < 0) {
+        if (health < 0)
+        {
             Debug.Log("Game Over");
             Destroy(gameObject);
         }
 
-         if (Input.GetMouseButtonDown(0)) // Perform raycast on left mouse button click
+        if (Input.GetMouseButtonDown(0)) // Perform raycast on left mouse button click
         {
             // check if either the sword or pickaxe is active
 
@@ -50,21 +51,21 @@ public GameObject player;
 
                 if (hit.collider && hit.collider.gameObject.tag == "Enemy")
                 {
-                        AudioSource.PlayClipAtPoint(popSound, transform.position);
+                    AudioSource.PlayClipAtPoint(popSound, transform.position, 0.2f);
 
-                        Enemy enemy = hit.collider.gameObject.GetComponent<Enemy>();
+                    Enemy enemy = hit.collider.gameObject.GetComponent<Enemy>();
 
-                        enemy.health -= sword.damage;
+                    enemy.health -= sword.damage;
 
-                        if (enemy.health <= 0)
-                        {
-                            score += enemy.score;
-                            scoreText.text = score.ToString();
-                            Destroy(hit.collider.gameObject);
+                    if (enemy.health <= 0)
+                    {
+                        score += enemy.score;
+                        scoreText.text = score.ToString();
+                        Destroy(hit.collider.gameObject);
 
-                            // play the pop.mp3 sound
+                        // play the pop.mp3 sound
 
-                        }
+                    }
 
                     // hit.collider.gameObject.GetComponent<Enemy>().health -= damage;
 
@@ -79,29 +80,29 @@ public GameObject player;
             }
             else if (player.transform.Find("Pickaxe").gameObject.activeSelf)
             {
-Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Vector2 origin = transform.position;
+                Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                Vector2 origin = transform.position;
 
-            Vector2 direction = (mousePosition - transform.position).normalized;
-            // direction.y += raycastOffset;
+                Vector2 direction = (mousePosition - transform.position).normalized;
+                // direction.y += raycastOffset;
 
-            RaycastHit2D hit = Physics2D.Raycast(origin, direction, Mathf.Infinity, collisionMask);
+                RaycastHit2D hit = Physics2D.Raycast(origin, direction, Mathf.Infinity, collisionMask);
 
-            if (hit.collider && hit.collider.gameObject.tag == "Ground")
-            {
-                hit.collider.gameObject.GetComponent<Tile>().health -= damage;
-
-                if (hit.collider.gameObject.GetComponent<Tile>().health <= 0)
+                if (hit.collider && hit.collider.gameObject.tag == "Ground")
                 {
-                    score += hit.collider.gameObject.GetComponent<Tile>().score;
-                    scoreText.text = score.ToString();
-                    // play the pop.mp3 sound
-                    AudioSource.PlayClipAtPoint(popSound, transform.position);
+                    hit.collider.gameObject.GetComponent<Tile>().health -= damage;
+
+                    if (hit.collider.gameObject.GetComponent<Tile>().health <= 0)
+                    {
+                        score += hit.collider.gameObject.GetComponent<Tile>().score;
+                        scoreText.text = score.ToString();
+                        // play the pop.mp3 sound at 20% volume
+                        AudioSource.PlayClipAtPoint(popSound, transform.position, 0.2f);
 
 
-                    Destroy(hit.collider.gameObject);
+                        Destroy(hit.collider.gameObject);
+                    }
                 }
-            }
             }
             else
             {

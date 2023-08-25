@@ -23,7 +23,7 @@ public class Tile : MonoBehaviour
 
         switch (health)
         {
-case 100:
+            case 100:
                 GetComponent<SpriteRenderer>().color = Color.white;
                 break;
             case 80:

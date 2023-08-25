@@ -8,23 +8,20 @@ public class EnemySpawner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        StartCoroutine(spawnEnemy(5f, enemyPrefab));
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        // spawn enemy every 5 seconds at random position on the surface around the player
 
+    }
+
+    private IEnumerator spawnEnemy(float interval, GameObject enemy) {
+        yield return new WaitForSeconds(interval);
         float randomX = Random.Range(-10, 10);
-        float randomY = Random.Range(-10, 10);
-
-        Vector3 randomPosition = new Vector3(randomX, randomY, 0);
-
-        if (Time.time % 10 == 0)
-        {
-            Instantiate(enemyPrefab, randomPosition, Quaternion.identity);
-        }
-
+        GameObject newEnemy = Instantiate(enemy, new Vector3(randomX, 0, 0), Quaternion.identity);
+        StartCoroutine(spawnEnemy(interval, enemy));
     }
 }

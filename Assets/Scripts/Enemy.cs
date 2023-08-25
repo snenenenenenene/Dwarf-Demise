@@ -15,12 +15,18 @@ public class Enemy : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        // check if collision is player
         if (collision.gameObject.tag == "Player")
         {
             CharacterInteractionController player = collision.gameObject.GetComponent<CharacterInteractionController>();
 
             player.health -= damage;
+            // push the player back to the direction the enemy is facing
+            player.GetComponent<Rigidbody2D>().AddForce(transform.right * 10);
+
+            // play the hurt sound
+
+            AudioClip hurtSound = Resources.Load<AudioClip>("Sound/ouch");
+            AudioSource.PlayClipAtPoint(hurtSound, transform.position);
         }
     }
 
